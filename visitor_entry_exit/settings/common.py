@@ -38,6 +38,7 @@ class Settings(Configuration):
         "django.contrib.messages",
         "django.contrib.staticfiles",
         "rest_framework",
+        "rest_framework_simplejwt",
         "account",
     ]
 
@@ -112,6 +113,13 @@ class Settings(Configuration):
             "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
         },
     ]
+
+    REST_FRAMEWORK = {
+        "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+        "DEFAULT_AUTHENTICATION_CLASSES": (
+            "rest_framework_simplejwt.authentication.JWTAuthentication",
+        ),
+    }
 
     # Internationalization
     # https://docs.djangoproject.com/en/3.2/topics/i18n/
