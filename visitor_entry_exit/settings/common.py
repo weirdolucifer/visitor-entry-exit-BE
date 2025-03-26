@@ -40,6 +40,7 @@ class Settings(Configuration):
         "rest_framework",
         "rest_framework_simplejwt",
         "account",
+        "visitor",
     ]
 
     MIDDLEWARE = [
@@ -119,6 +120,7 @@ class Settings(Configuration):
         "DEFAULT_AUTHENTICATION_CLASSES": (
             "rest_framework_simplejwt.authentication.JWTAuthentication",
         ),
+        'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination'
     }
 
     # Internationalization
