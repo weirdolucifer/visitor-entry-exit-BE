@@ -1,6 +1,7 @@
 from django_filters import rest_framework as filters
 from rest_framework import viewsets
-from visitor_entry_exit.utils.pagination_config import StandardResultsSetPagination
+from rest_framework.pagination import LimitOffsetPagination
+
 from .models import Visitor
 from .serializers import VisitorSerializer
 
@@ -18,7 +19,7 @@ class VisitorFilter(filters.FilterSet):
 class VisitorViewSet(viewsets.ModelViewSet):
     queryset = Visitor.objects.all()
     serializer_class = VisitorSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = LimitOffsetPagination
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = VisitorFilter
 
