@@ -8,7 +8,9 @@ from django_filters import rest_framework as filters
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import logout
+from str2bool import str2bool
 
+from account.filters import EmployeeFilter, DepartmentFilter
 from account.models import Employee, Department
 from account.serializers import EmployeeSerializer, DepartmentSerializer
 
@@ -16,6 +18,8 @@ from account.serializers import EmployeeSerializer, DepartmentSerializer
 class LoginAPIView(APIView):
     """Login API view to generate and return access and refresh tokens dynamically."""
 
+    authentication_classes = []
+    permission_classes = []
 
     def post(self, request, *args, **kwargs):
         """Handle login and return dynamically generated access and refresh tokens for the user."""
@@ -67,6 +71,8 @@ class LoginAPIView(APIView):
 class LogoutView(APIView):
     # authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]
+    authentication_classes = []
+    permission_classes = []
 
     def post(self, request):
         try:
@@ -83,13 +89,19 @@ class LogoutView(APIView):
 
 
 class EmployeeViewSet(viewsets.ModelViewSet):
-    queryset = Employee.objects.filter(active=True)
+    queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = EmployeeFilter
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        active_filter = self.request.query_params.get("active", None)
+        if active_filter is None:
+            queryset = queryset.filter(active=True)
+        else:
+            queryset = queryset.filter(active=str2bool(active_filter))
         return queryset
 
     def perform_destroy(self, instance):
@@ -98,13 +110,19 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
-    queryset = Department.objects.filter(active=True)
+    queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = DepartmentFilter
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        active_filter = self.request.query_params.get("active", None)
+        if active_filter is None:
+            queryset = queryset.filter(active=True)
+        else:
+            queryset = queryset.filter(active=str2bool(active_filter))
         return queryset
 
     def perform_destroy(self, instance):
