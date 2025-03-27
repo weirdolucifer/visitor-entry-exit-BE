@@ -43,6 +43,7 @@ class Settings(Configuration):
         "rest_framework_simplejwt",
         "account",
         "visitor",
+        "pass",
     ]
 
     MIDDLEWARE = [

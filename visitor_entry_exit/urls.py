@@ -35,4 +35,5 @@ urlpatterns = [
     path(r"live/", LivelinessCheck.as_view(), name="live_status"),
     path(r"accounts/", include("account.urls")),
     path(r"visitor/", include("visitor.urls")),
+    path(r"passes/", include("pass.urls")),
 ]
