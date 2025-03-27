@@ -7,7 +7,7 @@ Admin user -> login, logout
     Visitor -> [id, created_on, updated_on, name, phone, email, pic, address, VISITOR TYPE, gov id,
                 gov id no.] -> CRUD operation
     Pass -> [id, created_on, updated_on, visitor_id, PASS TYPE, validity, pass_image] CRU operation
-    Employee -> [id, created_on, updated_on, name, rank, extension no] CRUD operation
+    Employee -> [id, employee_id, created_on, updated_on, name, rank, extension no] CRUD operation
     Department -> [id, created_on, updated_on, department name] CRUD operation
     Visit Log -> [id, created_on, updated_on, pass_id, PASS TYPE, visitor_id, _visitor name_, 
                   whom_to_visit(employee_id), visiting_department(department_id), purpose_of_visit,

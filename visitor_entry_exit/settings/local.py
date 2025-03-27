@@ -13,6 +13,4 @@ class Settings(common.Settings):
     DEBUG = True
     ENVIRONMENT_CODE = os.environ.get("ENVIRONMENT_CODE", "dev")
     ALLOWED_HOSTS = ["*"]
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-    MEDIA_URL = '/media/'
     LOGGING = {}

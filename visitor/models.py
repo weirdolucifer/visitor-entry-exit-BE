@@ -3,14 +3,14 @@ from visitor_entry_exit.utils.base_model import BaseModel
 
 
 class Visitor(BaseModel):
-    CIVILIAN = 'civilian'
-    INTERNAL = 'internal'
-    GOV_AGENCY = 'gov agency'
+    CIVILIAN = "civilian"
+    INTERNAL = "internal"
+    GOV_AGENCY = "gov agency"
 
     VISITOR_TYPES = [
-        (CIVILIAN, 'Civilian'),
-        (INTERNAL, 'Internal'),
-        (GOV_AGENCY, 'Gov Agency'),
+        (CIVILIAN, "Civilian"),
+        (INTERNAL, "Internal"),
+        (GOV_AGENCY, "Gov Agency"),
     ]
 
     first_name = models.CharField(max_length=100)
@@ -19,9 +19,7 @@ class Visitor(BaseModel):
     address = models.TextField()
     email = models.EmailField(blank=True, null=True)
     visitor_type = models.CharField(
-        max_length=20,
-        choices=VISITOR_TYPES,
-        default=CIVILIAN
+        max_length=20, choices=VISITOR_TYPES, default=CIVILIAN
     )
     gov_id_type = models.CharField(max_length=50)
     gov_id_no = models.CharField(max_length=100)

@@ -1,15 +1,21 @@
 from django.contrib.auth.models import User
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
+from rest_framework import status, viewsets
+from django_filters import rest_framework as filters
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import logout
 
+from account.models import Employee, Department
+from account.serializers import EmployeeSerializer, DepartmentSerializer
+
 
 class LoginAPIView(APIView):
     """Login API view to generate and return access and refresh tokens dynamically."""
+
 
     def post(self, request, *args, **kwargs):
         """Handle login and return dynamically generated access and refresh tokens for the user."""
@@ -74,3 +80,33 @@ class LogoutView(APIView):
                 {"detail": f"Error: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.filter(active=True)
+    serializer_class = EmployeeSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (filters.DjangoFilterBackend,)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+    def perform_destroy(self, instance):
+        instance.active = False
+        instance.save()
+
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    queryset = Department.objects.filter(active=True)
+    serializer_class = DepartmentSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = (filters.DjangoFilterBackend,)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+    def perform_destroy(self, instance):
+        instance.active = False
+        instance.save()

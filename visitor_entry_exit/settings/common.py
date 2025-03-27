@@ -120,7 +120,11 @@ class Settings(Configuration):
         "DEFAULT_AUTHENTICATION_CLASSES": (
             "rest_framework_simplejwt.authentication.JWTAuthentication",
         ),
-        'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+        'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+        "DEFAULT_FILTER_BACKENDS": [
+            "django_filters.rest_framework.DjangoFilterBackend"
+        ],
+        "DATE_INPUT_FORMATS": ["%Y-%m-%d"],
     }
 
     # Internationalization
@@ -150,10 +154,3 @@ class Settings(Configuration):
     DEBUG = str2bool(os.environ.get("DEBUG", "false"))
 
     SERVER_READINESS_ROUTES = ["health_status", "ready_status", "live_status"]
-
-    REST_FRAMEWORK = {
-        "DEFAULT_FILTER_BACKENDS": [
-            "django_filters.rest_framework.DjangoFilterBackend"
-        ],
-        "DATE_INPUT_FORMATS": ["%Y-%m-%d"],
-    }
