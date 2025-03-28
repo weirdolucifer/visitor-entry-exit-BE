@@ -33,3 +33,7 @@ class Pass(BaseModel):
 
     def __str__(self):
         return f"Pass {self.visitor} {self.pass_type}"
+
+    @property
+    def is_active(self):
+        return self.validity > timezone.now()
