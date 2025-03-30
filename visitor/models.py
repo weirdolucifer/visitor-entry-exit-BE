@@ -4,6 +4,7 @@ from visitor_entry_exit.utils.base_model import BaseModel
 
 class Visitor(BaseModel):
     CIVILIAN = "civilian"
+    FOREIGNER = "foreigner"
     INTERNAL = "internal"
     GOV_AGENCY = "gov agency"
 

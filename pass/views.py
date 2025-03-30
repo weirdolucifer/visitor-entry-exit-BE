@@ -5,8 +5,8 @@ from rest_framework import viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from str2bool import str2bool
 
-from .models import Pass
-from .serializers import PassSerializer
+from .models import Pass, VisitLog
+from .serializers import PassSerializer, VisitLogSerializer
 
 
 class PassFilter(filters.FilterSet):
@@ -58,3 +58,9 @@ class PassViewSet(viewsets.ModelViewSet):
                 )  # Expired passes
 
         return queryset
+
+
+class VisitLogViewSet(viewsets.ModelViewSet):
+    queryset = VisitLog.objects.all()
+    serializer_class = VisitLogSerializer
+    pagination_class = LimitOffsetPagination
