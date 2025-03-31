@@ -26,12 +26,8 @@ Admin user -> login, logout
                   carried devices, vehicle details, out_datetime]
     (AT THE TIME OF LOGGING, CHECK AGAINST PASS TABLE VALIDITY)
 
-1. we need to show how many passes issued today?
-2. how many persons are still in the premise.
+1. we need to show how many passes issued today? [Done, some testing required due to timezone issue]
+2. how many persons are still in the premise. [Done, some testing required due to timezone issue]
 3. which passes are going to expire soon (default sorting). [DONE]
 4. support for filter on Visitor log table -> visitor_id, whom_to_visit, escorted_by, in_datetime, 
-   out_datetime, pass type
-
-
-    
-    
+   out_datetime, pass type [Done]

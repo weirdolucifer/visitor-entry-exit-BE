@@ -105,12 +105,21 @@ class VisitLog(BaseModel):
     out_datetime = models.DateTimeField(null=True, blank=True)
 
     def clean(self):
-        if self.pass_id.employee:
-            if self.whom_to_visit or self.visiting_department:
+        same_day_visit = VisitLog.objects.filter(
+            pass_id=self.pass_id
+        ).filter(
+            in_datetime__date=self.in_datetime.date()
+        ).exclude(pk=self.pk)
+
+        if same_day_visit.exists():
+            raise ValidationError(f"Visit already exists for {self.pass_id} on this date.")
+
+        if not self.whom_to_visit and not self.visiting_department:
+            if self.pass_id.employee:
                 pass
-        else:
-            if not self.whom_to_visit and not self.visiting_department:
+            else:
                 raise ValidationError("Either 'whom_to_visit' or 'visiting_department' must be provided for visitors.")
+
 
     def save(self, *args, **kwargs):
         self.full_clean()
