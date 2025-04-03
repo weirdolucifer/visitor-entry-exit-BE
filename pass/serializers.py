@@ -7,6 +7,7 @@ from .models import Pass, VisitLog
 
 class PassSerializer(serializers.ModelSerializer):
     visitor_name = serializers.SerializerMethodField()
+    visitor_image = serializers.SerializerMethodField()
     employee_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -18,6 +19,7 @@ class PassSerializer(serializers.ModelSerializer):
             "pass_image",
             "visitor",
             "visitor_name",
+            "visitor_image",
             "employee",
             "employee_name",
             "local_pass_id"
@@ -27,6 +29,12 @@ class PassSerializer(serializers.ModelSerializer):
         visitor = obj.visitor
         if visitor:
             return f"{visitor.first_name} {visitor.last_name}"
+        return None
+
+    def get_visitor_image(self, obj):
+        visitor = obj.visitor
+        if visitor:
+            return f"{visitor.image}"
         return None
 
     def get_employee_name(self, obj):

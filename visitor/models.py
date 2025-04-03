@@ -11,6 +11,7 @@ class Visitor(BaseModel):
     VISITOR_TYPES = [
         (CIVILIAN, "Civilian"),
         (INTERNAL, "Internal"),
+        (FOREIGNER, "Foreigner"),
         (GOV_AGENCY, "Gov Agency"),
     ]
 
