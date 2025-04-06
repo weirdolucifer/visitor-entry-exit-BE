@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PassViewSet, VisitLogViewSet, VisitLogStatsAPIView
+from .views import PassViewSet, VisitLogViewSet, VisitLogStatsAPIView, TodayVisitorVisit, WeeklyVisitorVisit
 
 app_name = "passes"
 
@@ -14,5 +14,15 @@ urlpatterns = [
         r"visit-stats/",
         VisitLogStatsAPIView.as_view(),
         name="visit_stats",
+    ),
+    path(
+        r"today-visitor-visit/",
+        TodayVisitorVisit.as_view(),
+        name="today_visitor_visit",
+    ),
+    path(
+        r"weekly-visitor-visit/",
+        WeeklyVisitorVisit.as_view(),
+        name="weekly_visitor_visit",
     ),
 ]

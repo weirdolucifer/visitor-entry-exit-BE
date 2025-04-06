@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.utils import timezone
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, status
@@ -44,27 +46,57 @@ class VisitLogViewSet(viewsets.ModelViewSet):
 
 class VisitLogStatsAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        # Get today's date (ignoring time)
         today_start = timezone.now().date()
-        today_end = today_start + timezone.timedelta(days=1)
-
-        # Count the passes issued today (i.e., in_datetime falls within today)
-        passes_issued_today = VisitLog.objects.filter(
-            in_datetime__gte=today_start,
-            in_datetime__lt=today_end
+        passes_issued_today = Pass.objects.filter(
+            created_on__date=today_start
         ).count()
 
-        # Current time (for comparison)
+        passes_expiring_today = Pass.objects.filter(
+            validity__date=today_start
+        ).count()
         now = timezone.now()
 
-        # Count the number of persons still in the premises
         persons_still_in = VisitLog.objects.filter(
-            in_datetime__lte=now,  # Check-in must be before or at the current time
-            out_datetime__isnull=True  # They haven't checked out yet
+            in_datetime__lte=now,
+            out_datetime__isnull=True
         ).count()
 
         # Return both stats in a single response
         return Response({
             "passes_issued_today": passes_issued_today,
+            "passes_expiring_today": passes_expiring_today,
             "persons_still_in": persons_still_in
         }, status=status.HTTP_200_OK)
+
+
+class TodayVisitorVisit(APIView):
+    def get(self, request):
+        today = datetime.today().date()
+        visit_logs = VisitLog.objects.filter(in_datetime__date=today)
+
+        visits = {}
+        for log in visit_logs:
+            timestamp = log.in_datetime.strftime("%Y-%m-%d %H:%M:%S")
+            if timestamp not in visits:
+                visits[timestamp] = 0
+            visits[timestamp] += 1
+
+        return Response(visits)
+
+
+class WeeklyVisitorVisit(APIView):
+    def get(self, request):
+        week_start = datetime.today() - timedelta(days=datetime.today().weekday())
+        week_end = week_start + timedelta(days=7)
+
+        # Query visits in the current week
+        visit_logs = VisitLog.objects.filter(in_datetime__range=[week_start, week_end])
+
+        weekly_visits = {}
+        for log in visit_logs:
+            date = log.in_datetime.date().strftime("%Y-%m-%d")
+            if date not in weekly_visits:
+                weekly_visits[date] = 0
+            weekly_visits[date] += 1
+
+        return Response(weekly_visits)
