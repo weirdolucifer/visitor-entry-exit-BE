@@ -53,8 +53,8 @@ class LoginAPIView(APIView):
         user_data = {
             "id": user.id,
             "username": user.username,
-            "user_type": "admin",  # You can adjust this as needed
-            "image": "/path/to/profile_image.jpg",  # You can adjust this as needed
+            "user_type": user.first_name,
+            "image": "/path/to/profile_image.jpg",
             "token": {"access": access_token, "refresh": refresh_token},
             "userInfo": {
                 "id": user.id,
