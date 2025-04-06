@@ -51,7 +51,10 @@ class VisitLogSerializer(serializers.ModelSerializer):
     employee_name = serializers.CharField(source='pass_id.employee.name', read_only=True)
     visitor_id = serializers.IntegerField(source='pass_id.visitor.id', read_only=True)
     visitor_name = serializers.SerializerMethodField()
+    visitor_image = serializers.SerializerMethodField()
     escorted_by_name = serializers.CharField(source='escorted_by.name', read_only=True)
+    whom_to_visit_name = serializers.CharField(source='whom_to_visit.name', read_only=True)
+    visiting_department_name = serializers.CharField(source='visiting_department.name', read_only=True)
 
     class Meta:
         model = VisitLog
@@ -80,4 +83,10 @@ class VisitLogSerializer(serializers.ModelSerializer):
         """
         if obj.pass_id.visitor:
             return f"{obj.pass_id.visitor.first_name} {obj.pass_id.visitor.last_name}"
+        return None
+
+    def get_visitor_image(self, obj):
+        visitor = obj.pass_id.visitor
+        if visitor:
+            return f"{visitor.image}"
         return None
