@@ -43,7 +43,8 @@ class VisitLogFilter(filters.FilterSet):
 
     class Meta:
         model = VisitLog
-        fields = ['visitor_name', 'whom_to_visit', 'escorted_by', 'in_date', 'out_date', 'pass_type', 'visiting_department']
+        fields = ['visitor_name', 'whom_to_visit', 'escorted_by', 'in_date', 'out_date', 'pass_type',
+                  'visiting_department']
 
     def filter_visitor_name(self, queryset, name, value):
         if value:

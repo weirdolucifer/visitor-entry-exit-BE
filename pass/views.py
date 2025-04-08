@@ -76,7 +76,9 @@ class TodayVisitorVisit(APIView):
 
         visits = {}
         for log in visit_logs:
-            timestamp = log.in_datetime.strftime("%Y-%m-%d %H:%M:%S")
+            adjusted_time = log.in_datetime + timedelta(hours=5, minutes=30)
+            timestamp = adjusted_time.strftime("%Y-%m-%d %H:%M")
+
             if timestamp not in visits:
                 visits[timestamp] = 0
             visits[timestamp] += 1
@@ -86,8 +88,8 @@ class TodayVisitorVisit(APIView):
 
 class WeeklyVisitorVisit(APIView):
     def get(self, request):
-        week_start = datetime.today() - timedelta(days=datetime.today().weekday())
-        week_end = week_start + timedelta(days=7)
+        week_end = datetime.today() - timedelta(days=datetime.today().weekday())
+        week_start = week_end - timedelta(days=7)
 
         # Query visits in the current week
         visit_logs = VisitLog.objects.filter(in_datetime__range=[week_start, week_end])
